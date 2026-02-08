@@ -25,10 +25,10 @@ This repo centralizes all 18 GitHub Copilot custom agents that govern the WALLIB
           @Business      @Atlas         @Privacy
           (Advisor)      (CTO)        (CARO/DPO)
                              │
-          ┌────────┬─────────┼─────────┬──────────┬──────────┐
-          │        │         │         │          │          │
-      @Architect  @Ops   @WebDir  @Product   @Project  @Growth
-          │      Cmdr              Designer    Lead      Lead
+          ┌────────┬─────────┼─────────┬──────────┬──────────┬──────────┐
+          │        │         │         │          │          │          │
+      @Architect  @Ops    @Scribe   @WebDir  @Product   @Project  @Growth
+          │      Cmdr      (Docs)            Designer    Lead      Lead
           │
           ├── @MobileLead      (wlbl-app)
           ├── @BackendLead     (wlbl-ecos)
@@ -89,6 +89,18 @@ All agents live in `.github/agents/`:
 | `frontend.agent.md` | `@FrontendLead` | Next.js / Frontend Lead |
 | `content.agent.md` | `@ContentLead` | Hugo / Content Lead |
 | `qa-guard.agent.md` | `@QAGuard` | Quality Assurance Guardian |
+
+## Workflows
+
+See [WORKFLOWS.md](WORKFLOWS.md) for the detailed Standard Operating Procedures (SOPs) that define how work flows through the agent organization.
+
+Every agent must follow the defined steps for:
+1.  **New Feature**
+2.  **Bug Fix**
+3.  **Release**
+4.  **Incident Response**
+5.  **Cross-Project Change**
+6.  **Compliance Review**
 
 ## Reuse
 

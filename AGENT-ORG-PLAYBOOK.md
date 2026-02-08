@@ -17,9 +17,10 @@
 9. [Cross-Cutting Agent (QA)](#9-cross-cutting-agent-qa)
 10. [Governance Mechanisms](#10-governance-mechanisms)
 11. [Collaboration Patterns](#11-collaboration-patterns)
-12. [Step-by-Step Creation Order](#12-step-by-step-creation-order)
-13. [Customization Checklist](#13-customization-checklist)
-14. [Reference: WALLIBLE Implementation](#14-reference-wallible-implementation)
+12. [Standard Operating Procedures (SOPs)](#12-standard-operating-procedures-sops)
+13. [Step-by-Step Creation Order](#13-step-by-step-creation-order)
+14. [Customization Checklist](#14-customization-checklist)
+15. [Reference: WALLIBLE Implementation](#15-reference-wallible-implementation)
 
 ---
 
@@ -128,22 +129,22 @@ The organization follows a **3-tier hierarchy** with 2 independent advisors:
     │ (Advisor) │  │  (CTO)   │  │ (CARO/DPO) │
     └───────────┘  └────┬─────┘  └────────────┘
                         │
-         Tier 1 ────────┼────────────────────────────────
-                        │
-    ┌─────────┬─────────┼─────────┬──────────┬──────────┐
-    │         │         │         │          │          │
- Architect  Ops    WebDirector Product  Project  Growth
-    │      Commander           Designer   Lead    Lead
-    │
-    │  Tier 2 ──────────────────────────────
-    │
-    ├── MobileLead    (project: app)
-    ├── BackendLead   (project: backend)
-    ├── CloudArch     (project: infra)
-    ├── QuantArchitect (project: functions)
-    ├── FrontendLead  (project: web-app)
-    ├── ContentLead   (project: landing)
-    └── QAGuard       (cross-project)
+     │  Tier 1 ────────┼────────────────────────────────
+     │                 │
+     ┌─────────┬───────┴─┬─────────┬──────────┬──────────┬──────────┐
+     │         │         │         │          │          │          │
+  Architect  Ops      Scribe  WebDirector Product  Project  Growth
+     │      Commander  (Docs)           Designer   Lead    Lead
+     │
+     │  Tier 2 ──────────────────────────────
+     │
+     ├── MobileLead    (project: app)
+     ├── BackendLead   (project: backend)
+     ├── CloudArch     (project: infra)
+     ├── QuantArchitect (project: functions)
+     ├── FrontendLead  (project: web-app)
+     ├── ContentLead   (project: landing)
+     └── QAGuard       (cross-project)
 ```
 
 ### Role count: 18 agents total
@@ -152,7 +153,7 @@ The organization follows a **3-tier hierarchy** with 2 independent advisors:
 |---|---|---|
 | **Tier 0** (CEO) | 1 | Ghabs |
 | **Advisors** (independent) | 2 | Business, Privacy |
-| **Tier 1** (CTO + direct reports) | 7 | Atlas, Architect, OpsCommander, WebDirector, ProductDesigner, ProjectLead, GrowthLead |
+| **Tier 1** (CTO + direct reports) | 8 | Atlas, Architect, OpsCommander, Scribe, WebDirector, ProductDesigner, ProjectLead, GrowthLead |
 | **Tier 2** (execution) | 7 | MobileLead, BackendLead, CloudArch, QuantArchitect, FrontendLead, ContentLead, QAGuard |
 | **Total** | **18** | — |
 
@@ -670,7 +671,28 @@ Ghabs → Business (independent)
 
 ---
 
-## 12. Step-by-Step Creation Order
+## 12. Standard Operating Procedures (SOPs)
+
+Every organization needs a `WORKFLOWS.md` file in the `<agents-repo>` that defines the sequence of agent invocations.
+
+### 12.1 The 6 Core Workflows
+
+1.  **New Feature:** Vision (@Ghabs) → Technical Feasibility (@Atlas) → Design (@Architect/@ProductDesigner) → Implementation (Tier 2) → Quality (@QAGuard) → Compliance (@Privacy) → Deployment (@OpsCommander) → Documentation (@Scribe).
+2.  **Bug Fix:** Report → Triage (@ProjectLead) → Fix (Tier 2) → Verify (@QAGuard) → Deploy (@OpsCommander).
+3.  **Release:** Decision (@Atlas) → Code Freeze → QA Pass (@QAGuard) → Audit (@Privacy) → Docs (@Scribe) → Staging → Go/No-Go (@Ghabs) → Production (@OpsCommander).
+4.  **Incident Response:** Detect (@OpsCommander) → Assess → Notify → Diagnose → Mitigate → Breach Assessment (@Privacy) → Permanent Fix.
+5.  **Cross-Project Change:** Proposal → Impact Analysis (@Architect) → Coordinated Implementation → Contract Testing (@QAGuard) → Deployment (@OpsCommander).
+6.  **Compliance Review:** Scope (@Privacy) → Audit → Risk Matrix → Remediation (@Architect) → Re-Audit → Sign-off.
+
+### 12.2 Routing & Gates
+
+- **Traffic Controller:** `@ProjectLead` selects the workflow and routes tasks but never makes technical decisions.
+- **Privacy Gate:** Mandatory if user data, payments, or analytics are involved.
+- **Independence Rule:** `@Privacy` findings cannot be overridden by `@Atlas`.
+
+---
+
+## 13. Step-by-Step Creation Order
 
 Follow this exact order to avoid broken delegation references:
 
@@ -721,12 +743,13 @@ After all files are created:
 
 ---
 
-## 13. Customization Checklist
+## 14. Customization Checklist
 
 When adapting for a new startup:
 
 - [ ] **Replace startup name** in all `description` fields and body text
 - [ ] **Replace mission statement** in Ghabs and Atlas agents
+- [ ] **Generate WORKFLOWS.md** based on the blueprint in Section 12
 - [ ] **Map your repos** to Tier 2 agents (1 agent per deployable project/service)
 - [ ] **Rename domain-specific agents** (e.g., QuantArchitect → MLArchitect, DataArchitect, etc.)
 - [ ] **Adjust tech stacks** in agent descriptions and standards sections
@@ -744,7 +767,7 @@ When adapting for a new startup:
 
 ---
 
-## 14. Reference: WALLIBLE Implementation
+## 15. Reference: WALLIBLE Implementation
 
 The original implementation was built for WALLIBLE, a fintech ecosystem for sustainable investing.
 
@@ -754,7 +777,7 @@ The original implementation was built for WALLIBLE, a fintech ecosystem for sust
 |---|---|---|---|
 | `wlbl-app` | `@MobileLead` | Flutter/Dart | Mobile app |
 | `wlbl-ecos` | `@BackendLead` | Python, Docker, Cloud Run | Backend API |
-| `wlbl-cosmos` | `@QuantArchitect` | Python, Cloud Functions | ESG calculators, optimizers |
+| `wlbl-cosmos` | `@QuantArchitect` | Python, Cloud Functions | ESG calculators, optimizers, Stripe |
 | `wlbl-bios` | `@FrontendLead` | Next.js, React, Tailwind | Pricing portal |
 | `wlbl-atmos` | `@ContentLead` | Hugo | Landing page (i18n: 8 languages) |
 | `wlbl-agents` | **All 18 agents** | — | Centralized agent definitions |
