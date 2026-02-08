@@ -1,0 +1,58 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.asc
+pom.xml.releaseBackup
+release.properties
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle/
+build/
+gradle/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+*.swp
+*.swo
+*~
+.vscode/
+
+# Compiled files
+*.class
+*.jar
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Node (if applicable)
+node_modules/
+npm-debug.log
+package-lock.json
+yarn.lock
+
+# Python (if applicable)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+
+# OS files
+Thumbs.db
