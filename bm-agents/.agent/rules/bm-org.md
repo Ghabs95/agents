@@ -90,6 +90,15 @@ All agents live in `.github/agents/`:
 | `frontend.agent.md` | `@FrontendLead` | React / Backoffice Lead |
 | `qa-guard.agent.md` | `@QAGuard` | Quality Assurance Guardian |
 
+
 ## Workflows
 
-See [WORKFLOWS.md](WORKFLOWS.md) for the detailed Standard Operating Procedures (SOPs).
+See [bm-workflows.md](../workflows/bm-workflows.md) for the detailed Standard Operating Procedures (SOPs) that define how work flows through the agent organization.
+
+Every agent must follow the defined steps for:
+1.  **New Feature**
+2.  **Bug Fix**
+3.  **Release**
+4.  **Incident Response**
+5.  **Cross-Project Change**
+6.  **Compliance Review**

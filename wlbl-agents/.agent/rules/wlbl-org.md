@@ -96,7 +96,7 @@ All agents live in `.github/agents/`:
 
 ## Workflows
 
-See [WORKFLOWS.md](WORKFLOWS.md) for the detailed Standard Operating Procedures (SOPs) that define how work flows through the agent organization.
+See [wlbl-workflows.md](../workflows/wlbl-workflows.md) for the detailed Standard Operating Procedures (SOPs) that define how work flows through the agent organization.
 
 Every agent must follow the defined steps for:
 1.  **New Feature**
@@ -105,7 +105,3 @@ Every agent must follow the defined steps for:
 4.  **Incident Response**
 5.  **Cross-Project Change**
 6.  **Compliance Review**
-
-## Reuse
-
-Want to replicate this organization for another startup? See [AGENT-ORG-PLAYBOOK.md](AGENT-ORG-PLAYBOOK.md) — a complete, generic blueprint with step-by-step instructions for recreating and customizing the full agent hierarchy.
