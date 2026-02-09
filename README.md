@@ -35,8 +35,16 @@ All agents live in `.github/agents/` — the only path GitHub Copilot discovers.
 ## Usage
 
 1. Open this repo as part of a **VS Code multi-root workspace** alongside your project repos.
-2. Type `@AgentName` in GitHub Copilot Chat to invoke any agent.
-3. Agents use `codebase` and `search` tools to access code across all repos in the workspace.
+2. **GitHub Copilot:** Type `@AgentName` in chat to invoke any agent using `.github/agents/`.
+3. **Antigravity:** Use the `run_workflow` tool or `@mention` a skill (e.g., `@mobile_lead`) using the `.agent/` directory.
+
+## Antigravity
+
+This repository is optimized for **Antigravity**, featuring executable workflows and specialized skills.
+
+- **Skills:** Found in `.agent/skills/`. Each skill encapsulates an agent's persona and logic.
+- **Workflows:** Found in `.agent/workflows/`. These are individual, executable SOPs for features, bugs, releases, and more.
+- **Rules:** Found in `.agent/rules/`. These enforce the organizational "Constitution" (see `bm-org.md` or `wlbl-org.md`).
 
 ## Customization
 
