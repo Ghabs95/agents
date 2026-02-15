@@ -22,6 +22,11 @@ Following the **New Feature** workflow from WORKFLOWS.md:
 - [x] **Step 1: Vision & Scope** (@Ghabs) - COMPLETED
   - **Input Received:** Feature requirements defined
   - **Scope:** Enhancement of existing surveyor floor plan editor
+- [x] **Step 2: Technical Feasibility** (@Atlas) - COMPLETED
+  - **Output:** Comprehensive technical assessment delivered
+  - **Key Finding:** Greenfield implementation required (surveyor doesn't exist yet)
+  - **Recommendation:** Use floor_plan_editor package, 2.5-4 weeks effort
+  - **GitHub:** Assessment posted at https://github.com/Ghabs95/agents/issues/4#issuecomment-3904524433
 
 ## Feature Requirements (from @Ghabs)
 
@@ -46,14 +51,13 @@ The current surveyor tool has UX friction in floor plan editing:
 - Corner value editing is broken
 
 ### 🔄 Current Step
-- [ ] **Step 2: Technical Feasibility** (@Atlas)
-  - **Owner:** @Atlas (Technical Director)
-  - **Output Required:** Technical assessment of HOW and WHEN
-  - **Status:** Routed to @Atlas - Awaiting response
-  - **GitHub:** Routing comment posted at https://github.com/Ghabs95/agents/issues/4#issuecomment-3904491656
+- [ ] **Step 3: Architecture Design** (@Architect)
+  - **Owner:** @Architect (Principal Software Architect)
+  - **Output Required:** ADR + technical breakdown
+  - **Status:** Ready for @Architect
+  - **Context:** Atlas assessment complete - greenfield floor plan editor needed
 
 ### ⏳ Pending Steps
-- [ ] **Step 2: Technical Feasibility** (@Atlas) - HOW and WHEN
 - [ ] **Step 3: Architecture Design** (@Architect) - ADR + breakdown
 - [ ] **Step 4: UX Design** (@ProductDesigner) - Wireframes
 - [ ] **Step 5: Implementation** (Tier 2 Lead) - Code + tests
@@ -64,24 +68,34 @@ The current surveyor tool has UX friction in floor plan editing:
 
 ## Next Actions
 
-### For @Atlas (Technical Feasibility)
-**Questions to assess:**
-1. **HOW:** 
-   - Where is the surveyor tool code located? (casit-app, casit-be, or both?)
-   - What UI framework is used for the floor plan editor?
-   - Are there existing snapping/attachment algorithms?
-   - What's the architecture for corner/room manipulation?
+### For @Architect (Architecture Design)
+**Input from @Atlas:**
+- ✅ **Verdict:** Greenfield implementation feasible (2.5-4 weeks)
+- ✅ **Recommendation:** Use `floor_plan_editor` Flutter package
+- ✅ **Effort Breakdown:** Base editor (5-7d) + Features (8-14d)
+- ✅ **Data Model:** Proposed FloorPlan/Room/Corner/Opening entities
 
-2. **WHEN:**
-   - Estimate effort for each feature
-   - Dependencies (if any)
-   - Recommended implementation order
-   - Risk assessment
+**Tasks for @Architect:**
+1. **ADR Creation:**
+   - Document decision: floor_plan_editor vs custom canvas
+   - Define integration approach with existing casit-app
+   - Storage strategy (Firebase? Backend API?)
 
-3. **Technical Questions:**
-   - Does the tool use canvas, SVG, or a library (e.g., Konva, Fabric.js)?
-   - Are corners/rooms stored as data models or DOM elements?
-   - Is there existing geometry/collision detection code?
+2. **Technical Breakdown:**
+   - Detailed component architecture
+   - Data model schema (match backend needs)
+   - API contracts for floor plan CRUD
+   - State management strategy (BLoC pattern alignment)
+
+3. **Dependencies:**
+   - Backend API requirements
+   - Firebase Storage setup (for SVG export)
+   - Package version constraints
+
+### For Future Steps:
+- **@ProductDesigner:** Use Atlas assessment to inform UX design
+- **@MobileLead:** Review floor_plan_editor package compatibility
+- **@BackendLead:** Plan API endpoints for floor plan persistence
 
 ### Success Criteria
 - Corners auto-generate near doors/windows
@@ -95,6 +109,7 @@ The current surveyor tool has UX friction in floor plan editing:
 
 ---
 **Created:** 2026-02-15
-**Last Updated:** 2026-02-15T13:58:00Z
+**Last Updated:** 2026-02-15T14:20:00Z
 **Tracked by:** @ProjectLead
-**Current Owner:** @Atlas
+**Current Owner:** @Architect
+**Previous Owners:** @Ghabs (Vision) → @Atlas (Feasibility)
