@@ -5,13 +5,9 @@
 **Workflow:** New Feature (Full SOP)
 
 ## Overview
-Review and define the surveyor feature for the Case Italia real estate ecosystem.
+Review and enhance the surveyor tool (property floor plan editor) for Case Italia.
 
-**Context:** Surveyors in real estate are professionals who measure and map property boundaries, features, and improvements. In the Case Italia ecosystem, this feature likely involves:
-- Property boundary data
-- Land measurements and dimensions
-- Property feature mapping
-- Survey document management
+**Context:** The surveyor tool is a floor plan editor allowing users to create and edit property layouts with rooms, doors, windows, and corners. This enhancement addresses specific UX and functionality issues.
 
 ## SOP Progress
 
@@ -23,13 +19,37 @@ Following the **New Feature** workflow from WORKFLOWS.md:
 
 ### ✅ Completed Steps
 - [x] Task created and routed by @ProjectLead
+- [x] **Step 1: Vision & Scope** (@Ghabs) - COMPLETED
+  - **Input Received:** Feature requirements defined
+  - **Scope:** Enhancement of existing surveyor floor plan editor
+
+## Feature Requirements (from @Ghabs)
+
+### WHAT - Feature List
+1. **Corner Management:**
+   - Add two new corners near openings (door and window)
+   - Fix: Setting corner values doesn't work correctly
+
+2. **Snapping & Attachment:**
+   - Join two touching corners
+   - Dragging a door to the closest corner will attach it there
+
+3. **Room Controls:**
+   - Improve room rotation
+   - Improve room movement
+
+### WHY - User Problem
+The current surveyor tool has UX friction in floor plan editing:
+- Corners near openings require manual placement
+- Elements don't snap/attach automatically (poor DX)
+- Room manipulation (rotation/movement) needs refinement
+- Corner value editing is broken
 
 ### 🔄 Current Step
-- [ ] **Step 1: Vision & Scope** (@Ghabs)
-  - **Owner:** @Ghabs (CEO/Founder)
-  - **Output Required:** Feature brief defining WHAT and WHY
-  - **Gate:** Founder's Check (4 questions: needle-moving? quality? sustainable? mission-aligned?)
-  - **Status:** Waiting for @Ghabs input
+- [ ] **Step 2: Technical Feasibility** (@Atlas)
+  - **Owner:** @Atlas (Technical Director)
+  - **Output Required:** Technical assessment of HOW and WHEN
+  - **Status:** Ready to start - routing to @Atlas
 
 ### ⏳ Pending Steps
 - [ ] **Step 2: Technical Feasibility** (@Atlas) - HOW and WHEN
@@ -43,18 +63,30 @@ Following the **New Feature** workflow from WORKFLOWS.md:
 
 ## Next Actions
 
-### Immediate
-1. **@Ghabs** needs to provide:
-   - WHAT: What is the surveyor feature? What capabilities should it have?
-   - WHY: Why is this important for Case Italia users?
-   - Scope: New feature or review/enhancement of existing?
-   - Success criteria: How do we know when this is done right?
+### For @Atlas (Technical Feasibility)
+**Questions to assess:**
+1. **HOW:** 
+   - Where is the surveyor tool code located? (casit-app, casit-be, or both?)
+   - What UI framework is used for the floor plan editor?
+   - Are there existing snapping/attachment algorithms?
+   - What's the architecture for corner/room manipulation?
 
-### Questions to Answer
-- Is this a new feature to build, or review of an existing implementation?
-- Which Case Italia repositories are affected? (casit-app, casit-be, casit-omi)
-- What user problem does this solve?
-- What data/services related to property surveys should be included?
+2. **WHEN:**
+   - Estimate effort for each feature
+   - Dependencies (if any)
+   - Recommended implementation order
+   - Risk assessment
+
+3. **Technical Questions:**
+   - Does the tool use canvas, SVG, or a library (e.g., Konva, Fabric.js)?
+   - Are corners/rooms stored as data models or DOM elements?
+   - Is there existing geometry/collision detection code?
+
+### Success Criteria
+- Corners auto-generate near doors/windows
+- Drag-and-drop elements snap to nearest valid corner
+- Room rotation/movement is smooth and intuitive
+- Corner value editing works reliably
 
 ## Links
 - **Issue:** https://github.com/Ghabs95/agents/issues/4
@@ -62,5 +94,5 @@ Following the **New Feature** workflow from WORKFLOWS.md:
 
 ---
 **Created:** 2026-02-15
-**Last Updated:** 2026-02-15
+**Last Updated:** 2026-02-15T12:38:00Z
 **Tracked by:** @ProjectLead
