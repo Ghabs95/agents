@@ -1,7 +1,7 @@
 # ✨ Feature: Surveyor Review
 **Project:** Case Italia
 **Type:** feature
-**Status:** In Progress - Step 2 (Technical Feasibility)
+**Status:** In Progress - Step 3 (Architecture Design)
 **Workflow:** New Feature (Full SOP)
 
 ## Overview
