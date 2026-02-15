@@ -2,7 +2,7 @@
 
 The AI team behind **BIOME**, the biohacking and health optimization ecosystem.
 
-This repo centralizes all GitHub Copilot custom agents that govern the BIOME ecosystem. Each agent is a persistent persona with scoped responsibilities, delegation authority, and collaboration rules.
+This repo centralizes 15 GitHub Copilot custom agents that govern the BIOME ecosystem. Each agent is a persistent persona with scoped responsibilities, delegation authority, and collaboration rules.
 
 ## The Ecosystem
 
@@ -14,7 +14,7 @@ This repo centralizes all GitHub Copilot custom agents that govern the BIOME eco
 | `biome/back-office` | `@FrontendLead` | React, Vite, TS | Admin panel for managing content/users |
 | `biome/pulse` | `@QuantArchitect` | Python | Health data algorithms & processing |
 | `biome/iac-*` | `@CloudArch` | Terraform, AWS | Infrastructure as Code |
-| `bm-agents` | All agents | — | This folder |
+| `bm-agents` | All agents | — | This repo |
 
 ## Org Chart
 
@@ -88,4 +88,16 @@ All agents live in `.github/agents/`:
 
 ## Workflows
 
-See [WORKFLOWS.md](WORKFLOWS.md) for the detailed Standard Operating Procedures (SOPs).
+See [WORKFLOWS.md](WORKFLOWS.md) for the detailed Standard Operating Procedures (SOPs) that define how work flows through the agent organization.
+
+Every agent must follow the defined steps for:
+1.  **New Feature**
+2.  **Bug Fix**
+3.  **Release**
+4.  **Incident Response**
+5.  **Cross-Project Change**
+6.  **Compliance Review**
+
+## Reuse
+
+Want to replicate this organization for another startup? See [AGENT-ORG-PLAYBOOK.md](AGENT-ORG-PLAYBOOK.md) — a complete, generic blueprint with step-by-step instructions for recreating and customizing the full agent hierarchy.
