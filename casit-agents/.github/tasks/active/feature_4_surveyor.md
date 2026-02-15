@@ -1,7 +1,7 @@
 # ✨ Feature: Surveyor Review
 **Project:** Case Italia
 **Type:** feature
-**Status:** In Progress - Step 1 (Vision & Scope)
+**Status:** In Progress - Step 2 (Technical Feasibility)
 **Workflow:** New Feature (Full SOP)
 
 ## Overview
@@ -49,7 +49,8 @@ The current surveyor tool has UX friction in floor plan editing:
 - [ ] **Step 2: Technical Feasibility** (@Atlas)
   - **Owner:** @Atlas (Technical Director)
   - **Output Required:** Technical assessment of HOW and WHEN
-  - **Status:** Ready to start - routing to @Atlas
+  - **Status:** Routed to @Atlas - Awaiting response
+  - **GitHub:** Routing comment posted at https://github.com/Ghabs95/agents/issues/4#issuecomment-3904491656
 
 ### ⏳ Pending Steps
 - [ ] **Step 2: Technical Feasibility** (@Atlas) - HOW and WHEN
@@ -94,5 +95,6 @@ The current surveyor tool has UX friction in floor plan editing:
 
 ---
 **Created:** 2026-02-15
-**Last Updated:** 2026-02-15T12:38:00Z
+**Last Updated:** 2026-02-15T13:58:00Z
 **Tracked by:** @ProjectLead
+**Current Owner:** @Atlas
