@@ -1,0 +1,86 @@
+name: Webhook Monitor
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    if: github.event.comment.user.login == 'copilot'
+    
+    steps:
+      - name: Check for agent mention
+        id: check_mention
+        run: |
+          COMMENT_BODY="${{ github.event.comment.body }}"
+          if echo "$COMMENT_BODY" | grep -qE '@[A-Za-z]+'; then
+            echo "agent_mentioned=true" >> $GITHUB_OUTPUT
+            AGENT=$(echo "$COMMENT_BODY" | grep -oE '@[A-Za-z]+' | head -1 | sed 's/@//')
+            echo "agent_name=$AGENT" >> $GITHUB_OUTPUT
+          else
+            echo "agent_mentioned=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Verify webhook server health
+        id: webhook_health
+        if: steps.check_mention.outputs.agent_mentioned == 'true'
+        continue-on-error: true
+        run: |
+          WEBHOOK_URL="${{ secrets.WEBHOOK_URL }}"
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "⚠️ WEBHOOK_URL secret not configured"
+            echo "status=unknown" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$WEBHOOK_URL/health" --max-time 5 || echo "000")
+          echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Webhook server is healthy"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Webhook server returned HTTP $HTTP_CODE"
+            echo "status=unhealthy" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Send alert if webhook is down
+        if: steps.check_mention.outputs.agent_mentioned == 'true' && steps.webhook_health.outputs.status == 'unhealthy'
+        run: |
+          TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+          
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "⚠️ Telegram secrets not configured, skipping alert"
+            exit 0
+          fi
+          
+          MESSAGE="🚨 Webhook Server Alert
+          
+Issue: #${{ github.event.issue.number }}
+Event: Copilot mentioned @${{ steps.check_mention.outputs.agent_name }}
+Status: Webhook server unhealthy (HTTP ${{ steps.webhook_health.outputs.http_code }})
+
+The agent chaining may not have been triggered. Please check the webhook service."
+          
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=${MESSAGE}" \
+            -d "parse_mode=HTML"
+      
+      - name: Log monitoring event
+        if: steps.check_mention.outputs.agent_mentioned == 'true'
+        run: |
+          echo "📊 Webhook Monitoring Summary"
+          echo "=============================="
+          echo "Issue: #${{ github.event.issue.number }}"
+          echo "Comment: ${{ github.event.comment.id }}"
+          echo "Agent: @${{ steps.check_mention.outputs.agent_name }}"
+          echo "Webhook Status: ${{ steps.webhook_health.outputs.status }}"
+          echo "HTTP Code: ${{ steps.webhook_health.outputs.http_code }}"
+          echo "Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          echo "=============================="
+          
+          # This creates a searchable artifact in GitHub Actions logs
+          echo "Event validated and logged successfully ✅"
