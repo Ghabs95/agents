@@ -56,18 +56,15 @@ jobs:
             exit 0
           fi
           
-          MESSAGE="🚨 Webhook Server Alert
+          ISSUE_NUM="${{ github.event.issue.number }}"
+          AGENT_NAME="${{ steps.check_mention.outputs.agent_name }}"
+          HTTP_CODE="${{ steps.webhook_health.outputs.http_code }}"
           
-Issue: #${{ github.event.issue.number }}
-Event: Copilot mentioned @${{ steps.check_mention.outputs.agent_name }}
-Status: Webhook server unhealthy (HTTP ${{ steps.webhook_health.outputs.http_code }})
-
-The agent chaining may not have been triggered. Please check the webhook service."
+          MESSAGE="🚨 Webhook Server Alert%0A%0AIssue: #${ISSUE_NUM}%0AEvent: Copilot mentioned @${AGENT_NAME}%0AStatus: Webhook server unhealthy (HTTP ${HTTP_CODE})%0A%0AThe agent chaining may not have been triggered. Please check the webhook service."
           
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
-            -d "text=${MESSAGE}" \
-            -d "parse_mode=HTML"
+            -d "text=${MESSAGE}"
       
       - name: Log monitoring event
         if: steps.check_mention.outputs.agent_mentioned == 'true'
