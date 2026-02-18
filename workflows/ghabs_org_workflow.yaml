@@ -338,8 +338,8 @@ fast_track_workflow:
 
     - id: "quick_implementation"
       name: "Quick Implementation"
-      description: "Copilot implements hotfix rapidly"
-      agent: "Copilot"
+      description: "Developer implements hotfix rapidly"
+      agent: "Developer"
       tools:
         - github:create_branch
         - github:commit_changes
@@ -401,6 +401,12 @@ monitoring:
     - before: "deployment"         # Full workflow deployments need approval
     - before: "emergency_deploy"   # Emergency deploys need approval
     - before: "compliance_gate"    # Privacy reviews always notify human
+  
+  # PR Merge Policy (workflow-level preference)
+  # Only applies when project config policy is 'workflow-based'
+  # When project config is 'always', this is ignored (human approval always enforced)
+  # When project config is 'never', this is ignored (auto-merge always allowed)
+  require_human_merge_approval: true  # Workflow preference: require human approval
 
   # Step timeouts (override global timeout for specific steps)
   step_timeouts:
@@ -452,4 +458,4 @@ metadata:
       - MobileLead
     tier3_agents:
       - QAGuard
-      - Copilot
+      - Developer
