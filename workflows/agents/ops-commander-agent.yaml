@@ -1,0 +1,76 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "OpsCommander"
+  description: "DevOps & SRE — handles deployment, infrastructure, and CI/CD"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "ops"
+  timeout_seconds: 1800
+  max_retries: 2
+
+  purpose: |
+    DevOps & SRE Lead of the Ghabs organization. Responsible for:
+    1. Merging approved pull requests into target branches
+    2. Creating releases with proper versioning and release notes
+    3. Managing deployment pipelines and infrastructure
+    4. Performing emergency deployments for hotfixes
+    5. Maintaining rollback plans for critical deployments
+    6. Closing issues after successful deployment
+
+  requires_tools:
+    - github:merge_pr
+    - github:create_release
+    - github:add_comment
+    - github:close_issue
+
+  inputs:
+    implementation_pr_url:
+      type: string
+      description: "URL to the implementation PR (full workflow)"
+      required: false
+    fix_pr_url:
+      type: string
+      description: "URL to the fix PR (bug fix workflow)"
+      required: false
+    hotfix_pr_url:
+      type: string
+      description: "URL to the hotfix PR (fast-track workflow)"
+      required: false
+
+  outputs:
+    deployment_status:
+      type: string
+      description: "Status of the deployment"
+    release_url:
+      type: string
+      description: "URL to the created release"
+    deployment_notes:
+      type: string
+      description: "Notes about the deployment"
+    release_notes:
+      type: string
+      description: "Release notes for the version"
+    rollback_plan:
+      type: string
+      description: "Rollback plan for emergency deployments"
+
+  prompt_template: |
+    You are the Ops Commander. Deploy the approved changes.
+
+    PR URL: {implementation_pr_url}
+
+    Your job:
+    1. Merge the approved PR into the target branch
+    2. Create a release with proper semantic versioning
+    3. Write clear release notes
+    4. Verify deployment health
+    5. Post deployment status as a comment
+    6. Prepare rollback plan if needed
+
+    Follow the release workflow: merge → tag → release → verify.
+
+  validation:
+    required_outputs: ["deployment_status"]

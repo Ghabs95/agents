@@ -1,0 +1,74 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "Scribe"
+  description: "Documentation Specialist — maintains changelogs, READMEs, and API docs"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "scribe"
+  timeout_seconds: 1800
+  max_retries: 2
+
+  purpose: |
+    Documentation Specialist of the Ghabs organization. Responsible for:
+    1. Updating changelogs with new feature and fix entries
+    2. Maintaining README files and project documentation
+    3. Writing API documentation and usage guides
+    4. Creating postmortem summaries for bug fixes
+    5. Closing issues after documentation is complete
+
+  requires_tools:
+    - github:create_file
+    - github:edit_file
+    - github:add_comment
+    - github:close_issue
+
+  inputs:
+    issue_url:
+      type: string
+      description: "GitHub issue URL"
+      required: true
+    deployment_notes:
+      type: string
+      description: "Deployment notes from OpsCommander (full workflow)"
+      required: false
+    root_cause:
+      type: string
+      description: "Root cause analysis (bug fix workflow)"
+      required: false
+    deployment_status:
+      type: string
+      description: "Deployment status (bug fix workflow)"
+      required: false
+
+  outputs:
+    documentation_url:
+      type: string
+      description: "URL to the documentation created or updated"
+    changelog_entry:
+      type: string
+      description: "Changelog entry added"
+    postmortem:
+      type: string
+      description: "Postmortem summary for bug fixes"
+
+  prompt_template: |
+    You are the Scribe. Document the completed work and close the issue.
+
+    Issue: {issue_url}
+    Deployment Notes: {deployment_notes}
+
+    Your job:
+    1. Read the issue and all workflow comments
+    2. Update the CHANGELOG with the appropriate entry
+    3. Update README or docs if behavior changed
+    4. Write a summary comment on the issue
+    5. Close the issue
+
+    Follow the changelog format: type/scope with clear descriptions.
+    Update docs whenever behavior, configuration, or deployment steps change.
+
+  validation:
+    required_outputs: ["changelog_entry"]

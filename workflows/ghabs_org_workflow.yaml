@@ -18,7 +18,7 @@ full_workflow:
     - id: "vision_and_scope"
       name: "Vision & Scope Definition"
       description: "Ghabs (CEO) defines product vision, requirements, and strategic scope"
-      agent: "Ghabs"
+      agent_type: "ceo"
       tools:
         - github:read_issue
         - github:add_comment
@@ -38,7 +38,7 @@ full_workflow:
     - id: "technical_feasibility"
       name: "Technical Feasibility Analysis"
       description: "Atlas (CTO) evaluates technical approach and architecture needs"
-      agent: "Atlas"
+      agent_type: "cto"
       tools:
         - github:search_codebase
         - github:add_comment
@@ -56,7 +56,7 @@ full_workflow:
     - id: "route_architecture"
       name: "Route to Architecture Review"
       description: "Conditional routing based on architecture needs"
-      agent: "router"
+      agent_type: "router"
       routes:
         - when: "architecture_needed == true"
           then: "architecture_design"
@@ -65,7 +65,7 @@ full_workflow:
     - id: "architecture_design"
       name: "Architecture Design"
       description: "Architect creates technical design and patterns"
-      agent: "Architect"
+      agent_type: "architect"
       tools:
         - github:create_file
         - github:add_comment
@@ -82,7 +82,7 @@ full_workflow:
     - id: "ux_design"
       name: "UX Design"
       description: "ProductDesigner creates user experience and interface designs"
-      agent: "ProductDesigner"
+      agent_type: "product-designer"
       tools:
         - github:create_file
         - github:add_comment
@@ -97,8 +97,8 @@ full_workflow:
 
     - id: "implementation"
       name: "Implementation"
-      description: "Tier2Lead implements the feature"
-      agent: "Tier2Lead"
+      description: "ExecutionLead implements the feature"
+      agent_type: "execution-lead"
       tools:
         - github:create_branch
         - github:commit_changes
@@ -117,7 +117,7 @@ full_workflow:
     - id: "quality_gate"
       name: "Quality Gate Review"
       description: "QAGuard performs code review and quality checks"
-      agent: "QAGuard"
+      agent_type: "qa"
       tools:
         - github:review_pr
         - github:add_comment
@@ -134,7 +134,7 @@ full_workflow:
     - id: "route_quality"
       name: "Route Based on Quality Review"
       description: "Handle quality gate results"
-      agent: "router"
+      agent_type: "router"
       routes:
         - when: "review_status == 'approved'"
           then: "compliance_gate"
@@ -145,7 +145,7 @@ full_workflow:
     - id: "compliance_gate"
       name: "Privacy & Compliance Review"
       description: "Privacy agent reviews for GDPR, security, and compliance"
-      agent: "Privacy"
+      agent_type: "privacy-advisor"
       tools:
         - github:review_pr
         - github:add_comment
@@ -161,7 +161,7 @@ full_workflow:
     - id: "route_compliance"
       name: "Route Based on Compliance"
       description: "Handle compliance gate results"
-      agent: "router"
+      agent_type: "router"
       routes:
         - when: "compliance_status == 'approved'"
           then: "deployment"
@@ -170,7 +170,7 @@ full_workflow:
     - id: "deployment"
       name: "Deployment"
       description: "OpsCommander handles deployment and infrastructure"
-      agent: "OpsCommander"
+      agent_type: "ops"
       tools:
         - github:merge_pr
         - github:create_release
@@ -186,7 +186,7 @@ full_workflow:
     - id: "documentation"
       name: "Documentation"
       description: "Scribe updates documentation and closes the issue"
-      agent: "Scribe"
+      agent_type: "scribe"
       tools:
         - github:create_file
         - github:edit_file
@@ -203,7 +203,7 @@ full_workflow:
     - id: "close_rejected"
       name: "Close Rejected Issue"
       description: "Close issue that failed quality gates"
-      agent: "ProjectLead"
+      agent_type: "project-lead"
       tools:
         - github:add_comment
         - github:close_issue
@@ -218,7 +218,7 @@ shortened_workflow:
     - id: "triage"
       name: "Bug Triage"
       description: "ProjectLead triages bug severity and priority"
-      agent: "ProjectLead"
+      agent_type: "project-lead"
       tools:
         - github:read_issue
         - github:add_comment
@@ -233,8 +233,8 @@ shortened_workflow:
 
     - id: "root_cause_analysis"
       name: "Root Cause Analysis"
-      description: "Tier2Lead investigates and identifies root cause"
-      agent: "Tier2Lead"
+      description: "ExecutionLead investigates and identifies root cause"
+      agent_type: "execution-lead"
       tools:
         - github:search_codebase
         - github:read_file
@@ -250,8 +250,8 @@ shortened_workflow:
 
     - id: "fix"
       name: "Implement Fix"
-      description: "Tier2Lead implements the bug fix"
-      agent: "Tier2Lead"
+      description: "ExecutionLead implements the bug fix"
+      agent_type: "execution-lead"
       tools:
         - github:create_branch
         - github:commit_changes
@@ -268,7 +268,7 @@ shortened_workflow:
     - id: "verify"
       name: "Verify Fix"
       description: "QAGuard reviews and verifies the fix"
-      agent: "QAGuard"
+      agent_type: "qa"
       tools:
         - github:review_pr
         - github:approve_pr
@@ -282,7 +282,7 @@ shortened_workflow:
 
     - id: "route_verification"
       name: "Route Based on Verification"
-      agent: "router"
+      agent_type: "router"
       routes:
         - when: "verification_status == 'approved'"
           then: "deploy"
@@ -291,7 +291,7 @@ shortened_workflow:
     - id: "deploy"
       name: "Deploy Fix"
       description: "OpsCommander deploys the bug fix"
-      agent: "OpsCommander"
+      agent_type: "ops"
       tools:
         - github:merge_pr
         - github:create_release
@@ -306,7 +306,7 @@ shortened_workflow:
     - id: "document"
       name: "Document Fix"
       description: "Scribe documents the fix and closes the issue"
-      agent: "Scribe"
+      agent_type: "scribe"
       tools:
         - github:add_comment
         - github:close_issue
@@ -324,7 +324,7 @@ fast_track_workflow:
     - id: "emergency_triage"
       name: "Emergency Triage"
       description: "ProjectLead performs rapid triage for critical issues"
-      agent: "ProjectLead"
+      agent_type: "project-lead"
       tools:
         - github:read_issue
         - github:add_label
@@ -339,7 +339,7 @@ fast_track_workflow:
     - id: "quick_implementation"
       name: "Quick Implementation"
       description: "Developer implements hotfix rapidly"
-      agent: "Developer"
+      agent_type: "developer"
       tools:
         - github:create_branch
         - github:commit_changes
@@ -356,7 +356,7 @@ fast_track_workflow:
     - id: "quick_verify"
       name: "Quick Verification"
       description: "QAGuard performs rapid verification"
-      agent: "QAGuard"
+      agent_type: "qa"
       tools:
         - github:review_pr
         - github:approve_pr
@@ -368,7 +368,7 @@ fast_track_workflow:
 
     - id: "route_hotfix"
       name: "Route Hotfix Decision"
-      agent: "router"
+      agent_type: "router"
       routes:
         - when: "verification_status == 'approved'"
           then: "emergency_deploy"
@@ -377,7 +377,7 @@ fast_track_workflow:
     - id: "emergency_deploy"
       name: "Emergency Deploy"
       description: "OpsCommander performs emergency deployment and closes issue"
-      agent: "OpsCommander"
+      agent_type: "ops"
       tools:
         - github:merge_pr
         - github:create_release
@@ -423,12 +423,12 @@ monitoring:
 error_handling:
   on_timeout:
     action: "notify_human"
-    fallback_agent: "Ghabs"
+    fallback_agent: "ceo"
   
   on_agent_failure:
     action: "retry"
     max_retries: 2
-    fallback_agent: "Atlas"  # CTO steps in for critical failures
+    fallback_agent: "cto"  # CTO steps in for critical failures
   
   on_validation_failure:
     action: "loop_back"
@@ -442,20 +442,25 @@ metadata:
     - wallible
     - biome
   agent_hierarchy:
+    # Tier 0 — CEO
     ceo: Ghabs
+    # CEO-level advisors (independent, report directly to CEO)
+    advisors:
+      - business-advisor   # Business
+      - privacy-advisor    # Privacy (CARO/DPO)
+    # Tier 1 — CTO (reports to CEO)
     cto: Atlas
-    tier1_leads:
-      - ProjectLead
-      - Architect
-      - ProductDesigner
-      - Privacy
-      - Scribe
-      - OpsCommander
-    tier2_leads:
-      - Tier2Lead
-      - FrontendLead
-      - BackendLead
-      - MobileLead
-    tier3_agents:
-      - QAGuard
-      - Developer
+    # Tier 2 — CTO direct reports
+    cto_reports:
+      - architect          # Architect
+      - product-designer   # ProductDesigner
+      - project-lead       # ProjectLead
+      - ops                # OpsCommander
+      - scribe             # Scribe
+    # Tier 3 — Execution (project-level agents)
+    execution:
+      - execution-lead     # ExecutionLead (generic)
+      - developer          # Developer (fast-track)
+    # Cross-cutting (reports to Architect)
+    cross_cutting:
+      - qa                 # QAGuard

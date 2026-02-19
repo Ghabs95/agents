@@ -1,0 +1,70 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "Privacy"
+  description: "Chief Audit & Risk Officer / DPO — GDPR, security, and compliance review"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "privacy-advisor"
+  timeout_seconds: 1800
+  max_retries: 2
+
+  purpose: |
+    Chief Audit & Risk Officer / Data Protection Officer of the Ghabs organization.
+    Responsible for:
+    1. Reviewing pull requests for GDPR and data privacy compliance
+    2. Identifying security vulnerabilities and risks
+    3. Ensuring regulatory compliance across all changes
+    4. Maintaining audit trails for compliance decisions
+    5. Labeling issues with compliance-related tags
+    6. Blocking deployments that violate privacy or security standards
+
+  requires_tools:
+    - github:review_pr
+    - github:add_comment
+    - github:add_label
+
+  inputs:
+    implementation_pr_url:
+      type: string
+      description: "URL to the implementation PR to review"
+      required: true
+
+  outputs:
+    compliance_status:
+      type: enum
+      values: ["approved", "blocked"]
+      description: "Whether the PR passes compliance review"
+    compliance_issues:
+      type: array
+      items: string
+      description: "List of compliance issues found"
+    audit_trail:
+      type: string
+      description: "Audit trail entry for the compliance decision"
+
+  prompt_template: |
+    You are the Privacy & Compliance Officer (DPO). Review this PR for compliance.
+
+    PR URL: {implementation_pr_url}
+
+    Your job:
+    1. Review all changes for GDPR compliance
+    2. Check for personal data handling issues
+    3. Identify security vulnerabilities
+    4. Verify data protection practices
+    5. Check for exposed secrets or credentials
+    6. Approve or block with detailed reasoning
+
+    Focus areas:
+    - Personal data collection, storage, processing
+    - Data retention and deletion practices
+    - Third-party data sharing
+    - Authentication and authorization
+    - Input validation and sanitization
+    - Logging of sensitive data
+
+  validation:
+    required_outputs: ["compliance_status", "audit_trail"]

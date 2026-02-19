@@ -1,0 +1,99 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "ExecutionLead"
+  description: "Execution Lead — implements features, investigates root causes, and fixes bugs"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "execution-lead"
+  timeout_seconds: 7200
+  max_retries: 2
+
+  purpose: |
+    Execution Lead of the Ghabs organization. Responsible for:
+    1. Implementing new features based on architecture and design specs
+    2. Investigating root causes of reported bugs
+    3. Creating branches, committing changes, and opening pull requests
+    4. Writing tests and ensuring adequate test coverage
+    5. Iterating on implementation based on quality gate feedback
+
+  requires_tools:
+    - github:create_branch
+    - github:commit_changes
+    - github:create_pr
+    - github:add_comment
+    - github:search_codebase
+    - github:read_file
+
+  inputs:
+    issue_url:
+      type: string
+      description: "GitHub issue URL"
+      required: true
+    architecture_doc_url:
+      type: string
+      description: "URL to architecture document (for new features)"
+      required: false
+    design_doc_url:
+      type: string
+      description: "URL to design document (for new features)"
+      required: false
+    severity:
+      type: string
+      description: "Bug severity (for bug fix workflow)"
+      required: false
+    root_cause:
+      type: string
+      description: "Root cause analysis (for bug fix iteration)"
+      required: false
+    fix_approach:
+      type: string
+      description: "Recommended fix approach (for bug fix workflow)"
+      required: false
+
+  outputs:
+    implementation_pr_url:
+      type: string
+      description: "URL to the implementation pull request"
+    fix_pr_url:
+      type: string
+      description: "URL to the bug fix pull request"
+    test_coverage:
+      type: string
+      description: "Test coverage summary"
+    implementation_notes:
+      type: string
+      description: "Notes on the implementation approach"
+    root_cause:
+      type: string
+      description: "Root cause analysis result (bug fix workflow)"
+    affected_components:
+      type: array
+      items: string
+      description: "Components affected by the bug"
+    fix_approach:
+      type: string
+      description: "Recommended approach for the fix"
+
+  prompt_template: |
+    You are the Execution Lead. Implement the required changes.
+
+    Issue: {issue_url}
+
+    Your job:
+    1. Read the issue and all prior analysis from comments
+    2. Search the codebase to understand the current state
+    3. Create a branch following naming conventions
+    4. Implement the changes (feature or fix)
+    5. Write or update tests
+    6. Commit with clear, descriptive messages
+    7. Open a pull request
+    8. Post a summary comment on the issue
+
+    Follow coding conventions: PEP 8, type hints, 100-char lines.
+    Keep changes minimal and focused.
+
+  validation:
+    required_outputs: ["implementation_pr_url", "implementation_notes"]

@@ -1,0 +1,75 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "QAGuard"
+  description: "Quality Assurance Guardian — code review, quality checks, and testing"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "qa"
+  timeout_seconds: 1800
+  max_retries: 2
+
+  purpose: |
+    Quality Assurance Guardian of the Ghabs organization. Responsible for:
+    1. Performing thorough code reviews on pull requests
+    2. Verifying test coverage and test quality
+    3. Checking coding standards and conventions compliance
+    4. Approving PRs that meet quality standards
+    5. Requesting changes with clear, actionable feedback
+    6. Rapid verification of hotfix PRs in fast-track workflow
+
+  requires_tools:
+    - github:review_pr
+    - github:add_comment
+    - github:request_changes
+    - github:approve_pr
+
+  inputs:
+    implementation_pr_url:
+      type: string
+      description: "URL to the implementation PR (full workflow)"
+      required: false
+    fix_pr_url:
+      type: string
+      description: "URL to the fix PR (bug fix workflow)"
+      required: false
+    hotfix_pr_url:
+      type: string
+      description: "URL to the hotfix PR (fast-track workflow)"
+      required: false
+
+  outputs:
+    review_status:
+      type: enum
+      values: ["approved", "changes_requested", "rejected"]
+      description: "Result of the quality review"
+    review_comments:
+      type: array
+      items: string
+      description: "Review comments and feedback"
+    test_results:
+      type: string
+      description: "Summary of test execution results"
+    verification_status:
+      type: enum
+      values: ["approved", "needs_work", "rejected"]
+      description: "Verification result for bug fixes and hotfixes"
+
+  prompt_template: |
+    You are the QA Guard. Review this pull request for quality and correctness.
+
+    PR URL: {implementation_pr_url}
+
+    Your job:
+    1. Review all changed files for correctness and style
+    2. Verify test coverage is adequate
+    3. Check for security issues or anti-patterns
+    4. Verify coding standards compliance (PEP 8, type hints, 100-char lines)
+    5. Approve if quality meets standards, or request changes with clear feedback
+
+    Be thorough but constructive. Provide actionable feedback.
+
+  validation:
+    required_outputs: ["review_status"]
