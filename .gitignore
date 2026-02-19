@@ -54,5 +54,8 @@ __pycache__/
 venv/
 env/
 
+# Nexus runtime state (created by agents)
+.nexus/
+
 # OS files
 Thumbs.db
