@@ -60,16 +60,52 @@ spec:
   prompt_template: |
     You are the QA Guard. Review this pull request for quality and correctness.
 
-    PR URL: {implementation_pr_url}
+    Issue: {issue_url}
 
-    Your job:
-    1. Review all changed files for correctness and style
-    2. Verify test coverage is adequate
-    3. Check for security issues or anti-patterns
-    4. Verify coding standards compliance (PEP 8, type hints, 100-char lines)
-    5. Approve if quality meets standards, or request changes with clear feedback
+    ## Steps
 
-    Be thorough but constructive. Provide actionable feedback.
+    1. Find the open PR for this issue:
+       ```
+       gh pr list --repo <owner>/<repo> --state open --search "<issue_number>"
+       ```
+    2. Read the full diff:
+       ```
+       gh pr diff <pr_number> --repo <owner>/<repo>
+       ```
+    3. Review all changed files for:
+       - Correctness and logic errors
+       - Adequate test coverage
+       - Security issues or anti-patterns
+       - Coding standards compliance (PEP 8, type hints, 100-char lines)
 
-  validation:
-    required_outputs: ["review_status"]
+    4. Post an inline review:
+       ```
+       gh pr review <pr_number> --repo <owner>/<repo> \
+         --comment --body "<your full review with file:line references>"
+       ```
+       For specific line comments:
+       ```
+       gh api repos/<owner>/<repo>/pulls/<pr_number>/comments \
+         --method POST \
+         -f body="<comment>" \
+         -f commit_id="<head_sha>" \
+         -f path="<file_path>" \
+         -F line=<line_number> \
+         -f side="RIGHT"
+       ```
+
+    5. Based on findings, either approve or request changes:
+       ```
+       gh pr review <pr_number> --approve --body "LGTM."
+       # or
+       gh pr review <pr_number> --request-changes --body "<summary>"
+       ```
+
+    6. Post a summary comment on the issue.
+
+    ## Completion summary
+
+    Set `verification_status: approved` or `verification_status: needs_work`.
+    Set `next_agent: ops` if approved, or `next_agent: execution-lead` if
+    changes were requested (the execution-lead will re-read your inline
+    comments and address them before opening a new review cycle).
