@@ -54,8 +54,11 @@ spec:
     3. Implement the minimal fix required
     4. Write a test if time allows
     5. Commit with a clear message
-    6. Open a PR targeting main
-    7. Post a summary comment
+    6. Open a PR targeting main with:
+       - Title: derive from the issue title using conventional commits format
+         (e.g. "fix: prevent nil pointer in webhook handler" — NOT "fix: resolve #N")
+       - Body: brief description of the fix and root cause
+    7. Post a summary comment on the issue with the PR link
 
     IMPORTANT: Speed is critical. Keep changes minimal and focused.
     Follow coding conventions: PEP 8, type hints, 100-char lines.
