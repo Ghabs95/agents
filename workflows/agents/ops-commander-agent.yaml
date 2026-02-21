@@ -66,9 +66,13 @@ spec:
     1. Merge the approved PR into the target branch
     2. Create a release with proper semantic versioning
     3. Write clear release notes
-    4. Verify deployment health
-    5. Post deployment status as a comment
-    6. Prepare rollback plan if needed
+    4. Verify pre-deploy validation evidence is present for the implementation:
+       - At least syntax/static checks were run for the stack
+         (e.g. `python3 -m py_compile ...`, `pytest -q`, `npm run lint`, `flutter analyze`)
+       - If evidence is missing or failing, stop and route back (do not close as complete)
+    5. Verify deployment health
+    6. Post deployment status as a comment, including validation evidence source (CI/check logs)
+    7. Prepare rollback plan if needed
 
     Follow the release workflow: merge → tag → release → verify.
 
