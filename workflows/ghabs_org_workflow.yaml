@@ -2,17 +2,16 @@ name: "Ghabs Organization Workflow"
 description: "Multi-agent workflow for Ghabs organization projects (Case Italia, Wallible, Biome)"
 version: "1.0.0"
 
-# This workflow defines the orchestration for new features, bug fixes, and hotfixes
+# This workflow defines orchestration across full, shortened, and fast-track tiers
 # using the actual Ghabs organization agent hierarchy
-
 workflow_types:
-  full: "new_feature"      # Complete feature development process
-  shortened: "bug_fix"     # Expedited bug fix process
-  fast-track: "hotfix"     # Critical hotfix process
+  full: "full"             # Complete feature development process
+  shortened: "shortened"   # Expedited delivery process
+  fast-track: "fast-track" # Critical hotfix process
 
 timeout_seconds: 7200  # 2 hours default timeout
 
-# --- FULL WORKFLOW (New Features) ---
+# --- FULL WORKFLOW (Full Delivery) ---
 full_workflow:
   steps:
     - id: "vision_and_scope"
@@ -116,7 +115,7 @@ full_workflow:
 
     - id: "quality_gate"
       name: "Quality Gate Review"
-      description: "QAGuard performs code review and quality checks"
+      description: "QAGuard performs code review and quality checks; approve only after full regression (or equivalent full CI suite) passes"
       agent_type: "qa"
       tools:
         - github:review_pr
@@ -212,12 +211,12 @@ full_workflow:
         - review_comments: "list[string]"
       final_step: true
 
-# --- SHORTENED WORKFLOW (Bug Fixes) ---
+# --- SHORTENED WORKFLOW (Expedited Delivery) ---
 shortened_workflow:
   steps:
     - id: "triage"
-      name: "Bug Triage"
-      description: "ProjectLead triages bug severity and priority"
+      name: "Intake & Triage"
+      description: "ProjectLead classifies priority, scope, and affected components"
       agent_type: "project-lead"
       tools:
         - github:read_issue
@@ -249,8 +248,8 @@ shortened_workflow:
       on_success: "fix"
 
     - id: "fix"
-      name: "Implement Fix"
-      description: "ExecutionLead implements the bug fix"
+      name: "Implement Change"
+      description: "ExecutionLead implements the change"
       agent_type: "execution-lead"
       tools:
         - github:create_branch
@@ -266,8 +265,8 @@ shortened_workflow:
       on_success: "verify"
 
     - id: "verify"
-      name: "Verify Fix"
-      description: "QAGuard reviews and verifies the fix"
+      name: "Verify Change"
+      description: "QAGuard reviews and verifies the change, requiring full regression (or equivalent full CI suite) before approval"
       agent_type: "qa"
       tools:
         - github:review_pr
@@ -289,8 +288,8 @@ shortened_workflow:
         - default: "fix"  # Loop back if needs work
 
     - id: "deploy"
-      name: "Deploy Fix"
-      description: "OpsCommander deploys the bug fix"
+      name: "Deploy Change"
+      description: "OpsCommander deploys the change"
       agent_type: "ops"
       tools:
         - github:merge_pr
@@ -304,8 +303,8 @@ shortened_workflow:
       on_success: "document"
 
     - id: "document"
-      name: "Document Fix"
-      description: "Scribe documents the fix and closes the issue"
+      name: "Document & Close"
+      description: "Scribe documents the change and closes the issue"
       agent_type: "scribe"
       tools:
         - github:add_comment
@@ -318,7 +317,7 @@ shortened_workflow:
         - postmortem: "string"
       final_step: true
 
-# --- FAST-TRACK WORKFLOW (Hotfixes) ---
+# --- FAST-TRACK WORKFLOW (Fast-Track Delivery) ---
 fast_track_workflow:
   steps:
     - id: "emergency_triage"
@@ -355,7 +354,7 @@ fast_track_workflow:
 
     - id: "quick_verify"
       name: "Quick Verification"
-      description: "QAGuard performs rapid verification"
+      description: "QAGuard performs rapid verification; approval still requires full regression (or equivalent full CI suite)"
       agent_type: "qa"
       tools:
         - github:review_pr

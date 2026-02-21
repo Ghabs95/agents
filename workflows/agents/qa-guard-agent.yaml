@@ -19,6 +19,7 @@ spec:
     4. Approving PRs that meet quality standards
     5. Requesting changes with clear, actionable feedback
     6. Rapid verification of hotfix PRs in fast-track workflow
+    7. Requiring full regression (or equivalent full CI suite) before approval
 
   requires_tools:
     - github:review_pr
@@ -78,7 +79,12 @@ spec:
        - Security issues or anti-patterns
        - Coding standards compliance (PEP 8, type hints, 100-char lines)
 
-    4. Post an inline review:
+    4. Verify full regression evidence before approving:
+       - Prefer CI status checks covering the full suite.
+       - If CI evidence is missing, request full-suite test output from the author.
+       - Do **not** approve while full regression is failing or not demonstrated.
+
+    5. Post an inline review:
        ```
        gh pr review <pr_number> --repo <owner>/<repo> \
          --comment --body "<your full review with file:line references>"
@@ -94,14 +100,14 @@ spec:
          -f side="RIGHT"
        ```
 
-    5. Based on findings, either approve or request changes:
+     6. Based on findings, either approve or request changes:
        ```
        gh pr review <pr_number> --approve --body "LGTM."
        # or
        gh pr review <pr_number> --request-changes --body "<summary>"
        ```
 
-    6. Post a summary comment on the issue.
+     7. Post a summary comment on the issue and include full regression evidence (CI link or test summary).
 
     ## Completion summary
 
@@ -109,3 +115,4 @@ spec:
     Set `next_agent: ops` if approved, or `next_agent: execution-lead` if
     changes were requested (the execution-lead will re-read your inline
     comments and address them before opening a new review cycle).
+    Include whether full regression/CI passed in your summary details.
