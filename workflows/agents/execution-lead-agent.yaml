@@ -87,10 +87,15 @@ spec:
     2. Search the codebase to understand the current state
     3. Create a branch following naming conventions
     4. Implement the changes (feature or fix)
-    5. Write or update tests
-    6. Commit with clear, descriptive messages
-    7. Open a pull request
-    8. Post a summary comment on the issue
+    5. Run syntax/static checks appropriate to the stack before completion
+       (examples: `python3 -m py_compile ...`, `pytest -q`, `npm run lint`, `flutter analyze`).
+    6. If checks fail, fix or mark blocked; do NOT close as complete while failing.
+    7. Write or update tests
+    8. Commit with clear, descriptive messages
+    9. Open a pull request
+    10. Post a summary comment on the issue including validation evidence:
+      - exact command(s) run
+      - pass/fail result (and key output)
 
     Follow coding conventions: PEP 8, type hints, 100-char lines.
     Keep changes minimal and focused.

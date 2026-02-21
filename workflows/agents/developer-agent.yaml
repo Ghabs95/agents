@@ -52,13 +52,18 @@ spec:
     1. Read the issue and emergency triage notes
     2. Create a hotfix branch from main
     3. Implement the minimal fix required
-    4. Write a test if time allows
-    5. Commit with a clear message
-    6. Open a PR targeting main with:
+     4. Run at least one syntax/static validation command that matches the stack
+       (examples: `python3 -m py_compile ...`, `pytest -q`, `npm run lint`, `flutter analyze`).
+     5. If validation fails, fix or mark work as blocked; do NOT declare completion while failing.
+     6. Write a test if time allows
+     7. Commit with a clear message
+     8. Open a PR targeting main with:
        - Title: derive from the issue title using conventional commits format
          (e.g. "fix: prevent nil pointer in webhook handler" — NOT "fix: resolve #N")
        - Body: brief description of the fix and root cause
-    7. Post a summary comment on the issue with the PR link
+     9. Post a summary comment on the issue with the PR link and include validation evidence:
+       - exact command(s) run
+       - pass/fail result (and key output)
 
     IMPORTANT: Speed is critical. Keep changes minimal and focused.
     Follow coding conventions: PEP 8, type hints, 100-char lines.
