@@ -1,0 +1,3 @@
+# Generated .agent.md files — YAML is the source of truth
+# These are produced by nexus _ensure_agent_definition() via the translator
+*.agent.md

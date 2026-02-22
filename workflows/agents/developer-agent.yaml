@@ -1,0 +1,72 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "Developer"
+  description: "Developer (fast-track) — rapid implementation for hotfixes and critical patches"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "developer"
+  timeout_seconds: 900
+  max_retries: 2
+
+  purpose: |
+    Fast-track Developer of the Ghabs organization. Responsible for:
+    1. Rapidly implementing hotfixes for critical production issues
+    2. Creating branches, committing targeted fixes, and opening PRs
+    3. Keeping changes minimal and focused on the critical issue
+    4. Posting clear descriptions of what was fixed and why
+
+  requires_tools:
+    - github:create_branch
+    - github:commit_changes
+    - github:create_pr
+    - github:add_comment
+
+  inputs:
+    issue_url:
+      type: string
+      description: "GitHub issue URL"
+      required: true
+    urgency:
+      type: string
+      description: "Urgency level from emergency triage"
+      required: false
+
+  outputs:
+    hotfix_pr_url:
+      type: string
+      description: "URL to the hotfix pull request"
+    fix_description:
+      type: string
+      description: "Description of the fix applied"
+
+  prompt_template: |
+    You are a fast-track Developer. Implement a hotfix for this critical issue.
+
+    Issue: {issue_url}
+    Urgency: {urgency}
+
+    Your job:
+    1. Read the issue and emergency triage notes
+    2. Create a hotfix branch from main
+    3. Implement the minimal fix required
+     4. Run at least one syntax/static validation command that matches the stack
+       (examples: `python3 -m py_compile ...`, `pytest -q`, `npm run lint`, `flutter analyze`).
+     5. If validation fails, fix or mark work as blocked; do NOT declare completion while failing.
+     6. Write a test if time allows
+     7. Commit with a clear message
+     8. Open a PR targeting main with:
+       - Title: derive from the issue title using conventional commits format
+         (e.g. "fix: prevent nil pointer in webhook handler" — NOT "fix: resolve #N")
+       - Body: brief description of the fix and root cause
+     9. Post a summary comment on the issue with the PR link and include validation evidence:
+       - exact command(s) run
+       - pass/fail result (and key output)
+
+    IMPORTANT: Speed is critical. Keep changes minimal and focused.
+    Follow coding conventions: PEP 8, type hints, 100-char lines.
+
+  validation:
+    required_outputs: ["hotfix_pr_url", "fix_description"]

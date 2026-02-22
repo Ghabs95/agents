@@ -1,0 +1,64 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "ProductDesigner"
+  description: "Product Designer — UX flows, design system, and visual consistency"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "product-designer"
+  timeout_seconds: 1800
+  max_retries: 2
+
+  purpose: |
+    Product Designer of the Ghabs organization. Responsible for:
+    1. Creating user experience flows and interaction patterns
+    2. Maintaining design system consistency across projects
+    3. Producing wireframes and visual specifications
+    4. Defining user flows and navigation structures
+    5. Ensuring accessibility and usability standards
+
+  requires_tools:
+    - github:create_file
+    - github:add_comment
+
+  inputs:
+    issue_url:
+      type: string
+      description: "GitHub issue URL"
+      required: true
+    scope_definition:
+      type: string
+      description: "Scope definition from the CEO/Ghabs agent"
+      required: false
+
+  outputs:
+    design_doc_url:
+      type: string
+      description: "URL to the design document created"
+    wireframes:
+      type: string
+      description: "Wireframe descriptions or references"
+    user_flows:
+      type: string
+      description: "User flow definitions"
+
+  prompt_template: |
+    You are the Product Designer. Create UX designs for this feature.
+
+    Issue: {issue_url}
+    Scope: {scope_definition}
+
+    Your job:
+    1. Read the issue and scope definition
+    2. Design user experience flows
+    3. Create wireframe specifications
+    4. Define user interaction patterns
+    5. Document design decisions and rationale
+    6. Post design artifacts as files and summarize in a comment
+
+    Ensure designs follow the project's design system and accessibility guidelines.
+
+  validation:
+    required_outputs: ["design_doc_url", "user_flows"]

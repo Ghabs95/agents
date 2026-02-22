@@ -1,0 +1,118 @@
+apiVersion: "nexus-core/v1"
+kind: "Agent"
+metadata:
+  name: "QAGuard"
+  description: "Quality Assurance Guardian — code review, quality checks, and testing"
+  author: "Ghabs Organization"
+  version: "1.0.0"
+
+spec:
+  agent_type: "qa"
+  timeout_seconds: 1800
+  max_retries: 2
+
+  purpose: |
+    Quality Assurance Guardian of the Ghabs organization. Responsible for:
+    1. Performing thorough code reviews on pull requests
+    2. Verifying test coverage and test quality
+    3. Checking coding standards and conventions compliance
+    4. Approving PRs that meet quality standards
+    5. Requesting changes with clear, actionable feedback
+    6. Rapid verification of hotfix PRs in fast-track workflow
+    7. Requiring full regression (or equivalent full CI suite) before approval
+
+  requires_tools:
+    - github:review_pr
+    - github:add_comment
+    - github:request_changes
+    - github:approve_pr
+
+  inputs:
+    implementation_pr_url:
+      type: string
+      description: "URL to the implementation PR (full workflow)"
+      required: false
+    fix_pr_url:
+      type: string
+      description: "URL to the fix PR (bug fix workflow)"
+      required: false
+    hotfix_pr_url:
+      type: string
+      description: "URL to the hotfix PR (fast-track workflow)"
+      required: false
+
+  outputs:
+    review_status:
+      type: enum
+      values: ["approved", "changes_requested", "rejected"]
+      description: "Result of the quality review"
+    review_comments:
+      type: array
+      items: string
+      description: "Review comments and feedback"
+    test_results:
+      type: string
+      description: "Summary of test execution results"
+    verification_status:
+      type: enum
+      values: ["approved", "needs_work", "rejected"]
+      description: "Verification result for bug fixes and hotfixes"
+
+  prompt_template: |
+    You are the QA Guard. Review this pull request for quality and correctness.
+
+    Issue: {issue_url}
+
+    ## Steps
+
+    1. Find the open PR for this issue:
+       ```
+       gh pr list --repo <owner>/<repo> --state open --search "<issue_number>"
+       ```
+    2. Read the full diff:
+       ```
+       gh pr diff <pr_number> --repo <owner>/<repo>
+       ```
+    3. Review all changed files for:
+       - Correctness and logic errors
+       - Adequate test coverage
+       - Security issues or anti-patterns
+       - Coding standards compliance (PEP 8, type hints, 100-char lines)
+
+    4. Verify full regression evidence before approving:
+       - Prefer CI status checks covering the full suite.
+       - If CI evidence is missing, request full-suite test output from the author.
+       - Do **not** approve while full regression is failing or not demonstrated.
+
+    5. Post an inline review:
+       ```
+       gh pr review <pr_number> --repo <owner>/<repo> \
+         --comment --body "<your full review with file:line references>"
+       ```
+       For specific line comments:
+       ```
+       gh api repos/<owner>/<repo>/pulls/<pr_number>/comments \
+         --method POST \
+         -f body="<comment>" \
+         -f commit_id="<head_sha>" \
+         -f path="<file_path>" \
+         -F line=<line_number> \
+         -f side="RIGHT"
+       ```
+
+     6. Based on findings, either approve or request changes:
+       ```
+       gh pr review <pr_number> --approve --body "LGTM."
+       # or
+       gh pr review <pr_number> --request-changes --body "<summary>"
+       ```
+
+     7. Post a summary comment on the issue and include full regression evidence (CI link or test summary).
+
+    ## Completion summary
+
+    Set `verification_status: approved` or `verification_status: needs_work`.
+    Set `next_agent: ops` if approved, or `next_agent: execution-lead` if
+    changes were requested (the execution-lead will re-read your inline
+    comments and address them before opening a new review cycle).
+    Include whether full regression/CI passed in your summary details.
