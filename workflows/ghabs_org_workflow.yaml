@@ -144,7 +144,7 @@ full_workflow:
     - id: "compliance_gate"
       name: "Privacy & Compliance Review"
       description: "Privacy agent reviews for GDPR, security, and compliance"
-      agent_type: "privacy-advisor"
+      agent_type: "privacy"
       tools:
         - github:review_pr
         - github:add_comment
@@ -445,8 +445,8 @@ metadata:
     ceo: Ghabs
     # CEO-level advisors (independent, report directly to CEO)
     advisors:
-      - business-advisor   # Business
-      - privacy-advisor    # Privacy (CARO/DPO)
+      - business   # Business
+      - privacy    # Privacy (CARO/DPO)
     # Tier 1 — CTO (reports to CEO)
     cto: Atlas
     # Tier 2 — CTO direct reports

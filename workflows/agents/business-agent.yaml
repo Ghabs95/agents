@@ -7,7 +7,7 @@ metadata:
   version: "1.0.0"
 
 spec:
-  agent_type: "business-advisor"
+  agent_type: "business"
   timeout_seconds: 1800
   max_retries: 2
 
