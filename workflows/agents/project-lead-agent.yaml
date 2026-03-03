@@ -1,4 +1,4 @@
-apiVersion: "nexus-core/v1"
+apiVersion: "nexus-arc/v1"
 kind: "Agent"
 metadata:
   name: "ProjectLead"
